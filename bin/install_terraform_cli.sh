@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd /workspace
+
 # Terraform CLI Installation Instructions
 # for Linux - Ubuntu/Debian
 
@@ -27,4 +29,4 @@ sudo apt update
 #Install Terraform from the new repository.
 sudo apt-get install terraform -y
 
-
+cd $PROJECT_ROOT
