@@ -25,7 +25,7 @@ aws --version
 ```
 
 ## Add you environmental variables
-git
+
 ### AWS Credentials
 
 Add this lines to the `~./bash_profile` file:
