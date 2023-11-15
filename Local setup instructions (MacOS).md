@@ -34,7 +34,8 @@ Add this lines to the `~./bash_profile` file:
 export AWS_ACCESS_KEY_ID='AKIAIOSFODNN7EXAMPLE'
 export AWS_SECRET_ACCESS_KEY='wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
 export AWS_DEFAULT_REGION='us-west-2'
-export AWS_CLI_AUTO_PROMP='on-partial'
+export AWS_CLI_AUTO_PROMPT='on-partial'
+export AWS_PAGER=""
 ```
 
 
