@@ -9,7 +9,15 @@ terraform {
       version = "5.25.0"
     }
   }
-}
+  cloud {
+    organization = "CarlosLRamirez"
+
+    workspaces {
+      name = "terra-house-1"
+    }
+  }
+}  
+
 
 provider "random" {
   # Configuration options
@@ -30,7 +38,6 @@ resource "random_string" "bucket_name" {
 locals {
     bucket_name = join("-", ["mybucket", random_string.bucket_name.result])
 }
-
 
 #https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html?icmpid=docs_amazons3_console
 resource "aws_s3_bucket" "example" {
