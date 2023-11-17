@@ -9,8 +9,14 @@ if [ -z "$terraform_token" ]; then
   exit 1
 fi
 
-# Set the path to the credentials file
+# Set the path to the credentials file and the .terraform.d folder
 credentials_file="/home/gitpod/.terraform.d/credentials.tfrc.json"
+terraform_folder="/home/gitpod/.terraform.d"
+
+# Create the .terraform.d folder if it doesn't exist
+if [ ! -d "$terraform_folder" ]; then
+  mkdir -p "$terraform_folder"
+fi
 
 # Create the credentials file with the specified content
 echo '{
@@ -22,4 +28,3 @@ echo '{
 }' > "$credentials_file"
 
 echo "Credentials file created at: $credentials_file"
-
