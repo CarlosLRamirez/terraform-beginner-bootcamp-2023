@@ -265,7 +265,6 @@ Provide the following code (replace your token in the file)
 }
 ```
 
-
 ## References
 
 https://www.tecmint.com/check-linux-os-version/

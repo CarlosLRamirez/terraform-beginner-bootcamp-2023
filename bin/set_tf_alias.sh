@@ -12,5 +12,6 @@ else
     echo "alias $ALIAS_NAME='$ALIAS_COMMAND'" >> ~/.bash_profile
     echo "Alias added to ~/.bash_profile."
     # Apply changes to the current session
-    source ~/.bash_profile
 fi
+
+ source ~/.bash_profile
