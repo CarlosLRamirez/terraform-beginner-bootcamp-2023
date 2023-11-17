@@ -25,6 +25,7 @@ provider "random" {
 
 provider "aws" {
   # Configuration options
+  profile = "default"
 }
 
 
