@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [Semanting Versioning](#semantic-versioning-mage)
+- [Semantic Versioning](#semantic-versioning-mage)
 - [Install Terraform CLI](#terraform-cli-installation)
   - [Considerations with Terraform CLI changes](#considerations-with-the-terraform-cli-changes)
   - [Considerations for Linux Distribution](#considerations-for-linux-distribution)
