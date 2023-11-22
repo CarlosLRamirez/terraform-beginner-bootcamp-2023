@@ -24,7 +24,7 @@
   - [Terraform Destroy](#terraform-destroy)
   - [Terraform Lock Files](#terraform-lock-files)
   - [Terraform State Files](#terraform-state-files)
-  - [Terraform Directory](#terra)
+  - [Terraform Directory](#terraform-directory)
 - [Issues with Terraform Cloud login and Gitpod](#issues-with-terraform-cloud-login-and-gitpod-workspace)
 
 ## Semantic Versioning :mage:
