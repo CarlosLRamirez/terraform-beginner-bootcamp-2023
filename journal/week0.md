@@ -21,7 +21,6 @@
   - [Terraform State Files](#terraform-state-files)
   - [Terraform Directory](#terra)
 - [Issues with Terraform Cloud login and Gitpod](#issues-with-terraform-cloud-login-and-gitpod-workspace)
-- [Additional References](#references)
 
 ## Semantic Versioning :mage:
 
