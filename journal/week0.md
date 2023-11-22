@@ -9,6 +9,11 @@
   - [Refactoring into Bash Scripts](#refactoring-into-bash-scripts)
   - [Gitpod Lifecycle](#gitpod-lifecycle-before-init-command)
   - [Working with Environment Variables](#working-with-environment-variables)
+    - [env command](#env-command)
+    - [Setting and Unsettling Env Vars](#setting-and-unsettling-env-vars)
+    - [Printing Vars](#printing-vars)
+    - [Scoping on Env Vars](#scoping-on-env-vars)
+    - [Persisting Env Vars in Gitpod](#persisting-env-vars-in-gitpod)
 - [Install AWS CLI](#aws-cli-installation)
 - [Terraform Basics](#terraform-basics)
   - [Terraform Registry](#terraform-registry)
@@ -130,7 +135,7 @@ We can list out all Environment Variables (Env Vars) using `env` command
 
 We can filter specific env vars using grep eg. `env | grep AWS_`
 
-#### Setting and Unsettling Env Varas
+#### Setting and Unsettling Env Vars
 
 In the terminal we can se using `export HELLO='world'`
 
