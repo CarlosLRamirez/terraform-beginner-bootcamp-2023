@@ -11,7 +11,7 @@ PROJECT_ROOT
 ├── variables.tf         # store the structure of input variables
 ├── providers.tf         # defined required providers and their configuration
 ├── outputs.tf           # stores our outputs
-├── terraform-tfvars     # the data of variables we want to load into our terraform projects
+├── terraform.tfvars     # the data of variables we want to load into our terraform projects
 └── README.md            # required for root modules
 ```
 
