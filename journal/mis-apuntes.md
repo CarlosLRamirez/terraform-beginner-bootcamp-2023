@@ -22,7 +22,17 @@ UPDATE: al final no resulto como se esperaba, porque al darle `terraform plan` d
 
 Lo que vamos a hacer es que vamos a quitar el randomness del nombre del bucket y lo vamos a declarar explicitamente con el mismo nombre que ya tiene, a travez de una variable.
 
-2.1 Definir la variable y validar que sea un nombre de bucket valido (con ayuda de ChatGPT)
+2.1 Borrar el proveedor random de `providers.tf`
+
+2.2 Borrar el `random_string` de `main.tf`
+
+2.3 Modificar el nombre del bucket en `main.tf` para que sea una variable
+
+`bucket = var.bucket_name`
+
+En mi caso también voy a eliminar la parte de `locals`, donde concatenaba la cadena aleatorio con "mybucket-" y lo voy a agregar directamente en el valor de la variable.
+
+2.4 Definir la variable en `variables.tf` y validar que sea un nombre de bucket valido (con ayuda de ChatGPT)
 
 ```sh
 variable "bucket_name" {
@@ -35,13 +45,25 @@ variable "bucket_name" {
 }
 ```
 
+2.5 Asignar el valor a la variable en `terraform.tfvars`
+
+`bucket_name = "mybucket-qrtrlolnx8hbxaui"`
+
+También agregar un ejemplo en `terraform.tfvars.example`
+
+2.6 Actualizar el `outputs.tf
+
+`
+
+
 
 ## Que hacer si ya empezamos a hacer cambios en main, pero queremos hacer commit de esos cambios en un nuevo branch y no en main.
 
 1. Crear el branch (opcional: asociarla a un issue)
 2. git fetch
 3. git checkout 28-configuration-drift
-4. git commit
+4. git add
+4. git commit 
 
 
 

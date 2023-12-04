@@ -1,4 +1,4 @@
-output "random_bucket_name" {
-    value = local.bucket_name
+output "bucket_name" {
+    value = var.bucket_name
 }
 
