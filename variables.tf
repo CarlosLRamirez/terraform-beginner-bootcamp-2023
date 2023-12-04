@@ -7,3 +7,4 @@ variable "user_uuid" {
     error_message = "Invalid UUID format. Please provide a valid UUID."
   }
 }
+
