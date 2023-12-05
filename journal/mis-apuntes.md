@@ -1,4 +1,6 @@
-## Que pasa si perdemos el terraform state file?
+## Bitacora: 4/Dic/2023
+
+### Que pasa si perdemos el terraform state file?
 
 Si perdemos el tfstate debemos "importar" nuestros recursos a Terraform, podemos utilizar el comando `terraform import` o también un block `import`, primero voy a probar con el comando `import`
 
@@ -14,28 +16,30 @@ El `website_bucket` viene de como lo declaramos en el `main.tf`, y el `mybucket-
 
 Como estamos usando un nombre aleatorio utilizando el proveedor random, también debemos importarlo, porque si no, al correr el `terraform apply` lo que va pasar es que va crear un bucket nuevo con otro nombre aleatorio. 
 
-Siguiendo la documentación (https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string#import),corremos el comando:
+Siguiendo la [documentación del provedor](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string#import), corremos el comando:
 
 `terraform import random_string.bucket_name qrtrlolnx8hbxaui`
 
-UPDATE: al final no resulto como se esperaba, porque al darle `terraform plan` decía que iba a remplazar el bucket con uno nuevo. (Empezamos a ver que quizás utilizar random no es una buena idea).
+**UPDATE:** al final no resulto como se esperaba, porque al darle `terraform plan` decía que iba a remplazar el bucket con uno nuevo. (Empezamos a ver que quizás utilizar random no es una buena idea).
 
-Lo que vamos a hacer es que vamos a quitar el randomness del nombre del bucket y lo vamos a declarar explicitamente con el mismo nombre que ya tiene, a través de una variable.
+Lo que vamos a hacer es que vamos a quitar la aleatoriedad (*"randomness"*) del nombre del bucket y lo vamos a declarar explicitamente con el mismo nombre que ya tiene, a través de una variable.
 
 > [!TIP]
-> Los import creados por comando, solo son validos mientras el ambiente de Gitpod esta activo.
+> Los import creados por comando, solo son validos mientras el ambiente de Gitpod esta activo, porque recordemos que el tfstate es efimero en este caso.
 
-2.1 Borrar el proveedor random de `providers.tf`
+3. Quitar el randomness del nombre del bucket
 
-2.2 Borrar el `random_string` de `main.tf`
+3.1 Borrar el proveedor random de `providers.tf`
 
-2.3 Modificar el nombre del bucket en `main.tf` para que sea una variable
+3.2 Borrar el `random_string` de `main.tf`
+
+3.3 Modificar el nombre del bucket en `main.tf` para que sea una variable
 
 `bucket = var.bucket_name`
 
 En mi caso también voy a eliminar la parte de `locals`, donde concatenaba la cadena aleatorio con "mybucket-" y lo voy a agregar directamente en el valor de la variable.
 
-2.4 Definir la variable en `variables.tf` y validar que sea un nombre de bucket valido (con ayuda de ChatGPT)
+3.4 Definir la variable en `variables.tf` y validar que sea un nombre de bucket valido (con ayuda de ChatGPT)
 
 ```sh
 variable "bucket_name" {
@@ -48,17 +52,17 @@ variable "bucket_name" {
 }
 ```
 
-2.5 Asignar el valor a la variable en `terraform.tfvars`
+3.5 Asignar el valor a la variable en `terraform.tfvars`
 
 `bucket_name = "mybucket-qrtrlolnx8hbxaui"`
 
 También agregar un ejemplo en `terraform.tfvars.example`
 
-2.6 Actualizar el `outputs.tf
+3.6 Actualizar el `outputs.tf
 
 Colocar el valor asignado al bucket `value = aws_s3_bucket.website_bucket.bucket`.
 
-## Que hacer si ya empezamos a hacer cambios en main, pero queremos hacer commit de esos cambios en un nuevo branch y no en main.
+### Que hacer si ya empezamos a hacer cambios en main, pero queremos hacer commit de esos cambios en un nuevo branch y no en main.
 
 1. Crear el branch (opcional: asociarla a un issue)
 2. git fetch
@@ -66,7 +70,7 @@ Colocar el valor asignado al bucket `value = aws_s3_bucket.website_bucket.bucket
 4. git add
 4. git commit 
 
-5/Dic
+## Bitacora: 5/Dic/2023
 
 - Modifique el nombre del recurso de `example` a `website-bucket` en `main.tf``
 - Corregí un error en la validación del nombre del bucket en `variables.tf` 
