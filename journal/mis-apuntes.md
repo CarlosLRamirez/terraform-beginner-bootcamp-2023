@@ -6,9 +6,9 @@ Si perdemos el tfstate debemos "importar" nuestros recursos a Terraform, podemos
 
 De acuerdo a la documentación del [provider AWS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket#import):
 
-`terraform import aws_s3_bucket.example mybucket-qrtrlolnx8hbxaui `
+`terraform import aws_s3_bucket.website_bucket mybucket-qrtrlolnx8hbxaui`
 
-El `example` viene de como lo declaramos en el `main.tf`, y el `mybucket-qrtrlolnx8hbxaui` lo sacamos el recurso actual en AWS.
+El `website_bucket` viene de como lo declaramos en el `main.tf`, y el `mybucket-qrtrlolnx8hbxaui` lo sacamos el recurso actual en AWS.
 
 2. Importar el random_string
 
@@ -20,7 +20,10 @@ Siguiendo la documentación (https://registry.terraform.io/providers/hashicorp/r
 
 UPDATE: al final no resulto como se esperaba, porque al darle `terraform plan` decía que iba a remplazar el bucket con uno nuevo. (Empezamos a ver que quizás utilizar random no es una buena idea).
 
-Lo que vamos a hacer es que vamos a quitar el randomness del nombre del bucket y lo vamos a declarar explicitamente con el mismo nombre que ya tiene, a travez de una variable.
+Lo que vamos a hacer es que vamos a quitar el randomness del nombre del bucket y lo vamos a declarar explicitamente con el mismo nombre que ya tiene, a través de una variable.
+
+> [!TIP]
+> Los import creados por comando, solo son validos mientras el ambiente de Gitpod esta activo.
 
 2.1 Borrar el proveedor random de `providers.tf`
 
@@ -39,7 +42,7 @@ variable "bucket_name" {
   description = "Name of the AWS S3 bucket"
   type        = string
   validation {
-    condition     = regex("^[a-zA-Z0-9.-]{3,63}$", var.bucket_name)
+    condition     = can(regex("^[a-zA-Z0-9.-]{3,63}$", var.bucket_name))
     error_message = "Invalid bucket name. It must be between 3 and 63 characters long and can only contain alphanumeric characters, hyphens, and dots."
   }
 }
@@ -53,9 +56,7 @@ También agregar un ejemplo en `terraform.tfvars.example`
 
 2.6 Actualizar el `outputs.tf
 
-`
-
-
+Colocar el valor asignado al bucket `value = aws_s3_bucket.website_bucket.bucket`.
 
 ## Que hacer si ya empezamos a hacer cambios en main, pero queremos hacer commit de esos cambios en un nuevo branch y no en main.
 
@@ -65,5 +66,13 @@ También agregar un ejemplo en `terraform.tfvars.example`
 4. git add
 4. git commit 
 
+5/Dic
+
+- Modifique el nombre del recurso de `example` a `website-bucket` en `main.tf``
+- Corregí un error en la validación del nombre del bucket en `variables.tf` 
+- Agregué via AWS Consola un nuevo Tag al bucket, para ver que pasaba: 
+  - Cuando le di `plan` me lo detectó, y cuando le di `apply` dice que lo agregó, sin embargo en el `tfstate` no veo nada, y tampoco me agrego nada al `main.tf`. 
+- Tengo una duda: todavía tenemos el tfstate en el .gitignore ?? que va pasar???
+- al final destruí el bucket
 
 
