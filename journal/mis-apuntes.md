@@ -79,4 +79,37 @@ Colocar el valor asignado al bucket `value = aws_s3_bucket.website_bucket.bucket
 - Tengo una duda: todavía tenemos el tfstate en el .gitignore ?? que va pasar???
 - al final destruí el bucket
 
+## Bitacora: 6/Dic/2023
+
+### Creación del Módulo "terrahouse_aws"
+- Creé el directorio `/modules/terrahouse_aws`
+- Adentro cree los archivos `main.tf`, `variables.tf`, `outputs.tf`, `README.md` y `LICENSE`
+- En el nuevo `main.tf` del modulo quedaron solo las secciones de:
+  - `required_providers`
+  - ~~`provider "aws"`~~
+  - `resource`
+- En el `main.tf` de la raiz se agrega la declaración del módulo y se pasan las variables que espera el módulo. Ojo :eyes: esto debe quedar fuera del primer nivel`terraform { }`:
+
+```
+module "terrahouse_aws" {
+  source = "./modules/terrahouse_aws"
+  user_uuid = var.user_uuid
+  bucket_name = var.bucket_name
+}
+```
+
+- El contenido de `./variables.tf` lo copie al mismo archivo del modulo, y en el `./variables.tf` se puede quitar la parte de validación ya que esto se hace en el dentro del modulo, incluso se podría quitar la descripción.
+
+-  En contenido del archivo `./outputs.tf` se copia al archivo del modulo, y en el `./outputs.tf` se debe especificar que el contenido lo debe obtener del output del módulo.
+
+```
+output "bucket_name" {
+    description = "Bucket name for our static web hosting"
+    value = module.terrahouse_aws.bucket_name
+}
+```
+
+- Para ver los outputs despues de un `apply` utilizamos el comando `terraform output` 
+
+[Terraform Modules](https://developer.hashicorp.com/terraform/language/modules)
 
