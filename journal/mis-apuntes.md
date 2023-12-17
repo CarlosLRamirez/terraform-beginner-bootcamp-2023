@@ -113,3 +113,11 @@ output "bucket_name" {
 
 [Terraform Modules](https://developer.hashicorp.com/terraform/language/modules)
 
+## Bitacora 17/Dic/2023
+
+- Agregue el recurso "aws_s3_bucket_website_configuration" en el main.tf del modulo terrahouse_aws, según la [documentación](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration)
+- Actualicé los outputs, (tanto en el modulo como el main), para mostrar el website_endpoint del bucket S3
+- Para "subir" el archivo index.html al bucket utilizamos el recurso `aws_s3_object`, según su [documentación](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object), en el `main.tf` del modulo 
+-  
+
+
