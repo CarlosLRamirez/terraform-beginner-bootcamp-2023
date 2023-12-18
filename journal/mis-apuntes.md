@@ -116,8 +116,14 @@ output "bucket_name" {
 ## Bitacora 17/Dic/2023
 
 - Agregue el recurso "aws_s3_bucket_website_configuration" en el main.tf del modulo terrahouse_aws, según la [documentación](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration)
-- Actualicé los outputs, (tanto en el modulo como el main), para mostrar el website_endpoint del bucket S3
-- Para "subir" el archivo index.html al bucket utilizamos el recurso `aws_s3_object`, según su [documentación](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object), en el `main.tf` del modulo 
--  
+- Actualicé los outputs, (tanto en el modulo como el main), para mostrar el website_endpoint del bucket S3.
+- Para "subir" el archivo index.html al bucket utilizamos el recurso `aws_s3_object`, según la [documentación](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object), en el `main.tf` del modulo.
+- En Terraform existe una variable especial llamada `path` que nos permite referenciar a ubicaciones locales, según se describe en esta sección de [Filesystem and Workspace Info](https://developer.hashicorp.com/terraform/language/expressions/references#filesystem-and-workspace-info).
+    - `path.module` para obtener el path modulo actual
+    - `path.root` para obtener el path del módulo raíz
+- Creé un nuevo directorio `public` con los archivos `index.html` y `error.html`, y los referencie utilizando la variable `path.root`, (por el momento comenté la parte de *etag*)
+- Observación: luego de haber creado el objeto la primera vez en el bucket con `terraform apply`, si modificamos el **contenido** del archivo fuente, el objeto no se actualiza luego de un nuevo `terraform apply`, esto es porque TF cheque la existencia del objeto, pero no los datos en el mismo -> para esto es que sirve el *etag*
+  - Para crear el *etag*, utilizamos la función de terraform [*filemd5*](https://developer.hashicorp.com/terraform/language/functions/filemd5), la cual obtiene un hash a partir del contenido del archivo, con esto no aseguramos que el valor cambié cada vez que modificamos el archivo.
+- Luego lo modifiqué para que el path lo pase por medio de una variable, 
 
 
