@@ -1,4 +1,4 @@
-## Bitacora: 4/Dic/2023
+## Bitácora: 4/Dic/2023
 
 ### Que pasa si perdemos el terraform state file?
 
@@ -70,7 +70,7 @@ Colocar el valor asignado al bucket `value = aws_s3_bucket.website_bucket.bucket
 4. git add
 4. git commit 
 
-## Bitacora: 5/Dic/2023
+## Bitácora: 5/Dic/2023
 
 - Modifique el nombre del recurso de `example` a `website-bucket` en `main.tf``
 - Corregí un error en la validación del nombre del bucket en `variables.tf` 
@@ -79,7 +79,7 @@ Colocar el valor asignado al bucket `value = aws_s3_bucket.website_bucket.bucket
 - Tengo una duda: todavía tenemos el tfstate en el .gitignore ?? que va pasar???
 - al final destruí el bucket
 
-## Bitacora: 6/Dic/2023
+## Bitácora: 6/Dic/2023
 
 ### Creación del Módulo "terrahouse_aws"
 - Creé el directorio `/modules/terrahouse_aws`
@@ -112,4 +112,23 @@ output "bucket_name" {
 - Para ver los outputs despues de un `apply` utilizamos el comando `terraform output` 
 
 [Terraform Modules](https://developer.hashicorp.com/terraform/language/modules)
+
+## Bitácora 17/Dic/2023
+
+- Agregue el recurso "aws_s3_bucket_website_configuration" en el main.tf del modulo terrahouse_aws, según la [documentación](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration)
+- Actualicé los outputs, (tanto en el modulo como el main), para mostrar el website_endpoint del bucket S3.
+- Para "subir" el archivo index.html al bucket utilizamos el recurso `aws_s3_object`, según la [documentación](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object), en el `main.tf` del modulo.
+- En Terraform existe una variable especial llamada `path` que nos permite referenciar a ubicaciones locales, según se describe en esta sección de [Filesystem and Workspace Info](https://developer.hashicorp.com/terraform/language/expressions/references#filesystem-and-workspace-info).
+    - `path.module` para obtener el path modulo actual
+    - `path.root` para obtener el path del módulo raíz
+- Creé un nuevo directorio `/public` con los archivos `index.html` y `error.html`, y los referencie utilizando la variable `path.root`, (por el momento comenté la parte de *etag*)
+- Observación: luego de haber creado el objeto la primera vez en el bucket con `terraform apply`, si modificamos el **contenido** del archivo fuente, el objeto no se actualiza luego de un nuevo `terraform apply`, esto es porque TF cheque la existencia del objeto, pero no los datos en el mismo -> para esto es que sirve el *etag*
+  - Para crear el *etag*, utilizamos la función de terraform [*filemd5*](https://developer.hashicorp.com/terraform/language/functions/filemd5), la cual obtiene un hash a partir del contenido del archivo, con esto no aseguramos que el valor cambié cada vez que modificamos el archivo.
+- Luego lo modifiqué para que el path lo pase por medio de una variable, 
+
+## Bitácora 3/Enero/2024
+
+- Voy a repetir lo anterior para el archivo `error.html`
+- NOTA: al pasar el valor de las variables por medio del `terraform.tfvars` no acepta el uso de `{path.root}`, por lo que debemos poner el path explícitamente.
+- NOTA: Necesito repasar el uso de variables y porque se deben declarar tanto dentro del módulo como del directorio raíz.
 
