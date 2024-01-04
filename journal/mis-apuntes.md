@@ -132,3 +132,19 @@ output "bucket_name" {
 - NOTA: al pasar el valor de las variables por medio del `terraform.tfvars` no acepta el uso de `{path.root}`, por lo que debemos poner el path explícitamente.
 - NOTA: Necesito repasar el uso de variables y porque se deben declarar tanto dentro del módulo como del directorio raíz.
 
+
+## Bitácora 4/Enero/2024
+- Primero separé el archivo `main.tf` del modulo `terrahouse_aws` en dos archivos: `resources-storage.tf` y `resources.cdn.tf`, en uno están los recursos relacionados al bucket S3, y el el otro lo relacionado a CloudFront
+- Creé la Distribución de CloudFront siguiente el video y esta documentación:
+  - [Cloudfront Distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution)
+  - [Origin Access Control](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control)
+  - [Bucket Policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy)
+- Para el Bucket Policy, se puede hacer de dos formas, la primera es como esta en la documentación (utilizando `data`), y la segunda es como inline utilizando `jsonencode()`, yo lo hice de la segunda forma.
+- El ejemplo del bucket policy se tomo de [aqui](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-cloudfront-introduces-origin-access-control-oac/)
+- NOTA: Hay que cambiar en el json los ":" or "=", para que funcione en Terraform. (*CONFIRMAR)
+
+- En el Bucket Policy necesito referenciar el Account ID, para esto hago uso de los [Terraform Data Sources](https://developer.hashicorp.com/terraform/language/data-sources), lo cual es una forma de obtener datos de los recursos de la nube.
+  - En este caso cree una **fuente de datos** en el `main.tf` del modulo, llamado `"aws_caller_identity" "current" {}`, y por medio de esta puedo obtener mi `account_id`.
+  - También tengo que referenciar el `id` de la distribución de Cloud Front, esto lo hago directamente con `${ }`
+
+- Tambien utilize los [Local Values](https://developer.hashicorp.com/terraform/language/values/locals)
