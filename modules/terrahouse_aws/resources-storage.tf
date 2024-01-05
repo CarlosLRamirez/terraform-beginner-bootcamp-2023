@@ -34,6 +34,10 @@ resource "aws_s3_object" "indexfile" {
   #etag = filemd5("path/to/file")
   #etag = filemd5("${path.root}/public/index.html")
   etag = filemd5(var.index_html_filepath)
+  lifecycle {
+    replace_triggered_by = [ terraform_data.content_version.output ]
+    ignore_changes = [ etag ]    
+  }
 }
 
 resource "aws_s3_object" "errorfile" {
@@ -97,3 +101,8 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
     ]
   }
 } */
+
+
+resource "terraform_data" "content_version" {
+  input = var.content_version
+}

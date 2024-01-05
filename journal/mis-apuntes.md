@@ -170,3 +170,15 @@ resource "aws_s3_object" "indexfile" {
 
 - La creación y destrucción del CF distribution toma alrededor de 4 a 5 minutos
   - Una forma de retener la Distribución para no estarla borrando cada vez, es utilizar el flag `retain_on_delete`, aún no lo he probado.
+
+### Terraform Resources Lifecycle
+
+- Utilizando `lifecycle`en los recursos se puede controlar cuando queremos que Terraform apliqué los cambios, se definió que los cambios en `index.html` unicamente se disparen cuando cambie la variable `content_version`y que ignore el `etag`.
+- Para esto se declaró la variable para pasar el valor, y también se uso un recurso tipo "dummy" llamado `terraform_data`.
+
+
+
+
+[Manage resource lifecycle](https://developer.hashicorp.com/terraform/tutorials/state/resource-lifecycle)
+[The lifecycle Meta-Argument](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle)
+[terraform_data](https://developer.hashicorp.com/terraform/language/resources/terraform-data)
