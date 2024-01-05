@@ -117,3 +117,18 @@ resource "aws_cloudfront_distribution" "default" {
     cloudfront_default_certificate = true
   }
 }
+
+resource "terraform_data" "invalidate_cache" {
+  triggers_replace = terraform_data.content_version.output
+  
+  # https://developer.hashicorp.com/terraform/language/expressions/strings#heredoc-strings
+
+  provisioner "local-exec" {
+    command = <<COMMAND
+    aws cloudfront create-invalidation \
+    --distribution-id \
+    ${aws_cloudfront_distribution.default.id}
+    --paths '/*'
+   COMMAND
+  }
+}
