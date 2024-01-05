@@ -133,13 +133,14 @@ output "bucket_name" {
 - NOTA: Necesito repasar el uso de variables y porque se deben declarar tanto dentro del módulo como del directorio raíz.
 
 
-## Bitácora 4/Enero/2024
+## Bitácora 4 y 5 de Enero 2024
 - Primero separé el archivo `main.tf` del modulo `terrahouse_aws` en dos archivos: `resources-storage.tf` y `resources.cdn.tf`, en uno están los recursos relacionados al bucket S3, y el el otro lo relacionado a CloudFront
 - Creé la Distribución de CloudFront siguiente el video y esta documentación:
   - [Cloudfront Distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution)
   - [Origin Access Control](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control)
   - [Bucket Policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy)
 - Para el Bucket Policy, se puede hacer de dos formas, la primera es como esta en la documentación (utilizando `data`), y la segunda es como inline utilizando `jsonencode()`, yo lo hice de la segunda forma.
+  -   [jsonencode Function](https://developer.hashicorp.com/terraform/language/functions/jsonencode)
 - El ejemplo del bucket policy se tomo de [aqui](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-cloudfront-introduces-origin-access-control-oac/)
 - NOTA: Hay que cambiar en el json los ":" or "=", para que funcione en Terraform. (*CONFIRMAR)
 
@@ -147,4 +148,25 @@ output "bucket_name" {
   - En este caso cree una **fuente de datos** en el `main.tf` del modulo, llamado `"aws_caller_identity" "current" {}`, y por medio de esta puedo obtener mi `account_id`.
   - También tengo que referenciar el `id` de la distribución de Cloud Front, esto lo hago directamente con `${ }`
 
-- Tambien utilize los [Local Values](https://developer.hashicorp.com/terraform/language/values/locals)
+- También utilize los [Local Values](https://developer.hashicorp.com/terraform/language/values/locals)
+  - Locals allows us to define local variables.
+  - It can be very useful when we need to transform data into another format and have a referenced variable.
+
+
+## Bitácora 6/Enero/2024
+
+- En los archivos `index.html` y `error.html`, es necesario especificar el content_type, si no no funciona, y trata el archivo como un binario o algo asi, porque lo descarga en lugar de mostrarlo en el explorador.
+
+```tf
+resource "aws_s3_object" "indexfile" {
+  bucket = aws_s3_bucket.website_bucket.bucket
+  key    = "index.html"
+  #source = "${path.root}/public/index.html"
+  source = var.index_html_filepath
+  content_type = "text/html"
+  etag = filemd5(var.index_html_filepath)
+}
+```
+
+- La creación y destrucción del CF distribution toma alrededor de 4 a 5 minutos
+  - Una forma de retener la Distribución para no estarla borrando cada vez, es utilizar el flag `retain_on_delete`, aún no lo he probado.
