@@ -133,7 +133,7 @@ output "bucket_name" {
 - NOTA: Necesito repasar el uso de variables y porque se deben declarar tanto dentro del módulo como del directorio raíz.
 
 
-## Bitácora 4 y 5 de Enero 2024
+## Bitácora 4/Enero/2024
 - Primero separé el archivo `main.tf` del modulo `terrahouse_aws` en dos archivos: `resources-storage.tf` y `resources.cdn.tf`, en uno están los recursos relacionados al bucket S3, y el el otro lo relacionado a CloudFront
 - Creé la Distribución de CloudFront siguiente el video y esta documentación:
   - [Cloudfront Distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution)
@@ -153,7 +153,7 @@ output "bucket_name" {
   - It can be very useful when we need to transform data into another format and have a referenced variable.
 
 
-## Bitácora 6/Enero/2024
+## Bitácora 5/Enero/2024
 
 - En los archivos `index.html` y `error.html`, es necesario especificar el content_type, si no no funciona, y trata el archivo como un binario o algo asi, porque lo descarga en lugar de mostrarlo en el explorador.
 
