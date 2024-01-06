@@ -106,3 +106,13 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 resource "terraform_data" "content_version" {
   input = var.content_version
 }
+
+#resource "terraform_data" "append_html" {
+#  triggers_replace= {
+#    content_version = var.content_version
+#  }
+#
+#  provisioner "local-exec" {
+#    command = "echo '${var.content_version}' >> /workspace/terraform-beginner-bootcamp-2023/public/index.html"
+#  }
+#}
