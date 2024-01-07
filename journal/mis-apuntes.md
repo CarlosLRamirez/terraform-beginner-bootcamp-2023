@@ -180,3 +180,9 @@ resource "aws_s3_object" "indexfile" {
 [The lifecycle Meta-Argument](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle)
 [terraform_data](https://developer.hashicorp.com/terraform/language/resources/terraform-data)
 
+## Bitácora 7/Enero/2024
+
+- Se agregaron imagenes a la pagina web, se creó una carpeta /public/assests, con las imagenes.
+- Se va utilizar "for each" para subir todos los archivos en la carpeta via Terraform
+https://developer.hashicorp.com/terraform/language/meta-arguments/for_each
+https://developer.hashicorp.com/terraform/language/functions/fileset
