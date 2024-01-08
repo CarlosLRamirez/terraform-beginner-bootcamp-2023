@@ -46,3 +46,9 @@ variable "content_version" {
     error_message = "Content version must be a positive integer starting at 1."
   }
 }
+
+variable "assets_path" {
+  description = "local path of our assets"
+  type        = string
+}
+

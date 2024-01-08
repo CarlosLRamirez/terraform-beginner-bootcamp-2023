@@ -22,7 +22,7 @@ Siguiendo la [documentación del provedor](https://registry.terraform.io/provide
 
 **UPDATE:** al final no resulto como se esperaba, porque al darle `terraform plan` decía que iba a remplazar el bucket con uno nuevo. (Empezamos a ver que quizás utilizar random no es una buena idea).
 
-Lo que vamos a hacer es que vamos a quitar la aleatoriedad (*"randomness"*) del nombre del bucket y lo vamos a declarar explicitamente con el mismo nombre que ya tiene, a través de una variable.
+Lo que vamos a hacer es que vamos a quitar la aleatoriedad (*"randomness"*) del nombre del bucket y lo vamos a declarar explícitamente con el mismo nombre que ya tiene, a través de una variable.
 
 > [!TIP]
 > Los import creados por comando, solo son validos mientras el ambiente de Gitpod esta activo, porque recordemos que el tfstate es efimero en este caso.
@@ -182,7 +182,19 @@ resource "aws_s3_object" "indexfile" {
 
 ## Bitácora 7/Enero/2024
 
-- Se agregaron imagenes a la pagina web, se creó una carpeta /public/assests, con las imagenes.
-- Se va utilizar "for each" para subir todos los archivos en la carpeta via Terraform
-https://developer.hashicorp.com/terraform/language/meta-arguments/for_each
-https://developer.hashicorp.com/terraform/language/functions/fileset
+- Se agregaron imágenes a la pagina web, se creó una carpeta `/public/assests`, con las imágenes.
+- Se actualizó el archivo `gitpod.yml` para instalar y ejecutar `http-server` durante el arranque del workspace. Esto nos ayuda a revisar la pagina web localmente, para encontrar la URL entramos a la pestaña de PORTS, del entorno de trabajo.
+- Entré a la consola de Terraform por medio de `terraform console` y aprendí la función `fileset` para listar los archivos en un directorio. 
+- Siguiente paseo: Se va utilizar "for each" para subir las imágenes al bucket via Terraform
+
+[fileset](https://developer.hashicorp.com/terraform/language/functions/fileset)
+
+
+## Bitácora 8/Enero/2024
+
+- Terraform soporta varios [tipos de datos](https://developer.hashicorp.com/terraform/language/expressions/types)(esto se estudia a detalle para la certificación), en ocasiones las funciones soportan solo un tipo de datos, y es necesario transformar (*to cast*) un tipo de dato a otro.
+- Para subir los archivos con las imágenes en `assets` usamos la función `for_each` en combinación con el `fileset`, se ignoró la parte de content_type para no añadirle complejidad, se podría hacer después Ver la sintaxis utilizada en `resources_storage.tf`-
+
+
+[for each](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each)
+
