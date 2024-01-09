@@ -170,3 +170,7 @@ resource "aws_s3_object" "indexfile" {
 
 - La creación y destrucción del CF distribution toma alrededor de 4 a 5 minutos
   - Una forma de retener la Distribución para no estarla borrando cada vez, es utilizar el flag `retain_on_delete`, aún no lo he probado.
+
+
+## Bitacora 9/Enero/2023
+  Adrew Verse 
