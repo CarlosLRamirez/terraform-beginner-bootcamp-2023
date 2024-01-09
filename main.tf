@@ -1,13 +1,13 @@
 terraform {
 
  
-  #cloud {
-  #  organization = "CarlosLRamirez"
-  #
-  #  workspaces {
-  #    name = "terra-house-1"
-  #  }
-  #}
+  cloud {
+    organization = "CarlosLRamirez"
+  
+    workspaces {
+      name = "terraform-cloud"
+    }
+  }
 
   }  
 
