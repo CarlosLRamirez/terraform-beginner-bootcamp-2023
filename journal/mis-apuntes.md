@@ -41,7 +41,7 @@ En mi caso también voy a eliminar la parte de `locals`, donde concatenaba la ca
 
 3.4 Definir la variable en `variables.tf` y validar que sea un nombre de bucket valido (con ayuda de ChatGPT)
 
-```sh
+```tf
 variable "bucket_name" {
   description = "Name of the AWS S3 bucket"
   type        = string
@@ -90,7 +90,7 @@ Colocar el valor asignado al bucket `value = aws_s3_bucket.website_bucket.bucket
   - `resource`
 - En el `main.tf` de la raiz se agrega la declaración del módulo y se pasan las variables que espera el módulo. Ojo :eyes: esto debe quedar fuera del primer nivel`terraform { }`:
 
-```
+```tf
 module "terrahouse_aws" {
   source = "./modules/terrahouse_aws"
   user_uuid = var.user_uuid
@@ -102,7 +102,7 @@ module "terrahouse_aws" {
 
 -  En contenido del archivo `./outputs.tf` se copia al archivo del modulo, y en el `./outputs.tf` se debe especificar que el contenido lo debe obtener del output del módulo.
 
-```
+```tf
 output "bucket_name" {
     description = "Bucket name for our static web hosting"
     value = module.terrahouse_aws.bucket_name
@@ -173,5 +173,34 @@ resource "aws_s3_object" "indexfile" {
 
 
 ## Bitacora 9/Enero/2023
-  Adrew Verse 
-  222
+  - Week 2 Live Stream: Se volvio a probar el uso de Terraform Cloud, se creó una nueva branch a partir de la version 1.5.0, llamada `terraform-cloud`.
+  - Se comentó toda la parte de cdn para hacerlo menos complejo
+  - Las variables de entorno (Credenciales AWS) deben guardarse en Terraform Cloud
+  - Las variables de Terraform deben guardarse en Terraform Cloud
+  - Hay que hacer cambios en el codigo, ya que la ruta cambia ya que ahora se referencian por TF Cloud, se utiliza el `${path.path}` al declarar la variable
+  - En el video no lo resolvieron, pero luego en Discord alguien dio la respuesta, así debe quedar el `main.tf`:
+
+```tf
+    terraform {
+  cloud {
+    organization = "OrgName"
+
+    workspaces {
+      name = "terraform-cloud"
+    }
+  }
+}
+
+
+module "terrahouse_aws" {
+  source = "./modules/terrahouse_aws"
+  user_uuid = var.user_uuid
+  bucket_name = var.bucket_name
+  index_html_filepath = "${path.root}${var.index_html_filepath}"
+  error_html_filepath = "${path.root}${var.error_html_filepath}"
+}
+```
+    
+  - No se hizo merge a main sino que se dejó como un branch aparte, se podria integrar todo al final, para usar TF cloud con todo integrado.
+
+
