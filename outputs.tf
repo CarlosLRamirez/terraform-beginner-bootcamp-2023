@@ -16,6 +16,6 @@ locals {
     root_path = path.root
 }
 
-output "root.path" {
+output "root_path" {
     value = local.root_path
 }
