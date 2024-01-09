@@ -20,7 +20,7 @@ output "root_path" {
     value = local.root_path
 }
 
-output "index_path" {
+output "error_path" {
     value = var.error_html_filepath
 }
 
