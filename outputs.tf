@@ -19,3 +19,11 @@ locals {
 output "root_path" {
     value = local.root_path
 }
+
+output "index_path" {
+    value = var.error_html_filepath
+}
+
+output "index_path" {
+    value = var.index_html_filepath
+}
