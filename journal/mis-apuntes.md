@@ -174,3 +174,4 @@ resource "aws_s3_object" "indexfile" {
 
 ## Bitacora 9/Enero/2023
   Adrew Verse 
+  222
