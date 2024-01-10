@@ -198,3 +198,35 @@ resource "aws_s3_object" "indexfile" {
 
 [for each](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each)
 
+## Bitacora 9/Enero/2023
+  - Week 2 Live Stream: Se volvio a probar el uso de Terraform Cloud, se creó una nueva branch a partir de la version 1.5.0, llamada `terraform-cloud`. (No se hizo merge a main, esto quedo solo [aqui](https://github.com/CarlosLRamirez/terraform-beginner-bootcamp-2023/tree/terraform-cloud))
+  - Se comentó toda la parte de cdn para hacerlo menos complejo
+  - Las variables de entorno (Credenciales AWS) deben guardarse en Terraform Cloud
+  - Las variables de Terraform deben guardarse en Terraform Cloud
+  - Hay que hacer cambios en el codigo, ya que la ruta cambia ya que ahora se referencian por TF Cloud, se utiliza el `${path.path}` al declarar la variable
+  - En el video no lo resolvieron, pero luego en Discord alguien dio la respuesta, así debe quedar el `main.tf`:
+
+```tf
+    terraform {
+  cloud {
+    organization = "OrgName"
+
+    workspaces {
+      name = "terraform-cloud"
+    }
+  }
+}
+
+
+module "terrahouse_aws" {
+  source = "./modules/terrahouse_aws"
+  user_uuid = var.user_uuid
+  bucket_name = var.bucket_name
+  index_html_filepath = "${path.root}${var.index_html_filepath}"
+  error_html_filepath = "${path.root}${var.error_html_filepath}"
+}
+```
+
+> [!IMPORTANT]
+> No se hizo merge a main sino que se dejó como un branch aparte., Se podria continuar integrando a la version final con Terraform Cloud.
+
