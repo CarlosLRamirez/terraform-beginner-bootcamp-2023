@@ -37,3 +37,6 @@ terraform.rc
 *.code-worskpace
 
 notes.temp
+
+
+terraform-provider-terratowns/terraform-provider-terratowns_v*
