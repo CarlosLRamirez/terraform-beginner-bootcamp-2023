@@ -4,8 +4,9 @@ package main
 
 // fmt is short format, it contains functions for formatted I/O.
 import (
-	// "log"
+	"log"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
@@ -46,7 +47,7 @@ func Provider() *schema.Provider {
 				Type: schema.TypeString,
 				Required: true,
 				Description: "UUID for configuration",
-				//ValidateFunc: validateUUID,
+				ValidateFunc: validateUUID,
 			},
 		},
 	}
@@ -54,11 +55,21 @@ func Provider() *schema.Provider {
 	return p
 }
 
-//func validateUUID(v interface{}, k string) (ws []string, errors []error) {
-//	log.Print('validateUUID:start')
-//	value := v.(string)
-//	if _,err = uuid.Parse(value); err != nil {
-//		errors = append(error, fmt.Errorf("invalid UUID format"))
-//	}
-//	log.Print('validateUUID:end')
-//}
+func validateUUID(v interface{}, k string) (ws []string, errors []error) {
+	log.Print("validateUUID:start")
+	value := v.(string)
+	if _, err := uuid.Parse(value); err != nil {
+		errors = append(errors, fmt.Errorf("invalid UUID format"))
+	}
+	log.Print("validateUUID:end")
+	return
+}
+
+
+func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc{
+	return func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics){
+	  log.Print("providerConfigure:start")
+	  log.Print("providerConfigure:end")	
+	}
+
+}
