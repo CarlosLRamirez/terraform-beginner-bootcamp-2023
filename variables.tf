@@ -1,5 +1,16 @@
-variable "user_uuid" {
+variable "teacherset_user_uuid" {
   description = "User UUID"
+  type        = string
+}
+
+variable "terratowns_access_token" {
+  description = "Terratown access token"
+  type        = string
+}
+
+
+variable "terratowns_endpoint" {
+  description = "terratowns endpoint"
   type        = string
 }
 
