@@ -8,7 +8,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-
 	"log"
 	"fmt"
 	"github.com/google/uuid"
@@ -39,7 +38,6 @@ func Provider() *schema.Provider {
 	p = &schema.Provider{
 		ResourcesMap:  map[string]*schema.Resource{
 			"terratowns_home": Resource(),
-
 		},
 		DataSourcesMap:  map[string]*schema.Resource{
 
@@ -91,7 +89,6 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 	}
 }
 
-
 func Resource() *schema.Resource {
 	log.Print("Resource:start")
 	resource := &schema.Resource{
@@ -126,7 +123,6 @@ func Resource() *schema.Resource {
 				Description: "The content version of the home",
 			},
 		},
-
 	}
 	log.Print("Resource:start")
 	return resource
@@ -188,7 +184,6 @@ func resourceHouseCreate(ctx context.Context, d *schema.ResourceData, m interfac
 
 	log.Print("resourceHouseCreate:end")
 
-
 	return diags
 }
 
@@ -231,14 +226,13 @@ func resourceHouseRead(ctx context.Context, d *schema.ResourceData, m interface{
 		d.Set("description",responseData["description"].(string))
 		d.Set("domain_name",responseData["domain_name"].(string))
 		d.Set("content_version",responseData["content_version"].(float64))
-	} else if resp.StatusCode != http.StatusNotFound {
+	} else if resp.StatusCode == http.StatusNotFound {
 		d.SetId("")
 	} else if resp.StatusCode != http.StatusOK {
 		return diag.FromErr(fmt.Errorf("failed to read home resource, status_code: %d, status: %s, body %s", resp.StatusCode, resp.Status, responseData))
 	}
 
 	log.Print("resourceHouseRead:end")
-
 
 	return diags
 }
@@ -281,9 +275,15 @@ func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 	}
 	defer resp.Body.Close()
 
+	// parse response JSON
+	var responseData map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&responseData);  err != nil {
+		return diag.FromErr(err)
+	}
+
 	// StatusOK = 200 HTTP Response Code
 	if resp.StatusCode != http.StatusOK {
-		return diag.FromErr(fmt.Errorf("failed to update home resource, status_code: %d, status: %s", resp.StatusCode, resp.Status))
+		return diag.FromErr(fmt.Errorf("failed to update home resource, status_code: %d, status: %s, body %s", resp.StatusCode, resp.Status, responseData))
 	}
 
 	log.Print("resourceHouseUpdate:end")
@@ -291,7 +291,6 @@ func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 	d.Set("name",payload["name"])
 	d.Set("description",payload["description"])
 	d.Set("content_version",payload["content_version"])
-
 	return diags
 }
 
@@ -331,6 +330,5 @@ func resourceHouseDelete(ctx context.Context, d *schema.ResourceData, m interfac
 	d.SetId("")
 
 	log.Print("resourceHouseDelete:end")
-
 	return diags
 }
