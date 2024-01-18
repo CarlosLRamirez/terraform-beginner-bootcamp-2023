@@ -14,25 +14,26 @@ variable "terratowns_endpoint" {
   type        = string
 }
 
-variable "bucket_name" {
-  description = "Name of the AWS S3 bucket"
-  type        = string
+#variable "bucket_name" {
+#  description = "Name of the AWS S3 bucket"
+#  type        = string
+#}
+
+variable "riseofnations" {
+  type        = object({
+    public_path = string
+    content_version = number
+  }) 
 }
 
-variable "index_html_filepath" {
-  type        = string
+variable "atitlan" {
+  type        = object({
+    public_path = string
+    content_version = number
+  }) 
 }
 
-variable "error_html_filepath" {
-  type        = string
-}
 
-variable "content_version" {
-  type        = number
-}
 
-variable "assets_path" {
-  type        = string
-}
 
 
