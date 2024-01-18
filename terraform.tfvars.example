@@ -2,9 +2,9 @@ terratowns_endpoint="https://terratowns.cloud/api"
 #bucket_name = "tf-beginner-bootcamp-qrtrlolnx8hbxaui"
 riseofnations = {
     public_path = "/workspace/terraform-beginner-bootcamp-2023/public/riseofnations"
-    content_version = 1
+    content_version = 2
 }
 atitlan = {
     public_path = "/workspace/terraform-beginner-bootcamp-2023/public/atitlan"
-    content_version = 1
+    content_version = 2
 }
