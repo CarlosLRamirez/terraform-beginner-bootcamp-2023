@@ -44,7 +44,7 @@ DESCRIPTION
  
   domain_name = module.home_riseofnations_hosting.domain_name
   #domain_name = "thisisatest.cloudfront.net"
-  town = "missingo"
+  town = "gamers-grotto"
   content_version = var.riseofnations.content_version
 }
 
@@ -69,7 +69,7 @@ DESCRIPTION
  
   domain_name = module.home_atitlan_hosting.domain_name
   #domain_name = "thisisatest.cloudfront.net"
-  town = "missingo"
+  town = "the-nomad-pad"
   content_version = var.atitlan.content_version
 }
 
